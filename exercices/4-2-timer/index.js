@@ -1,5 +1,5 @@
 
-\
+
 function setTimer () {
     let message = process.argv[2]
     let hour = process.argv[3]
