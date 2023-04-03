@@ -1,11 +1,6 @@
 
 
-function setTimer () {
-    let message = process.argv[2]
-    let hour = process.argv[3]
-    let min = process.argv[4]
-    let sec = process.argv[5]
-    
+function setTimer (message, hour, min, sec) {
     let nums = [hour, min, sec].map(Number)
     if (nums.includes(NaN)) throw new Error(`Передан неправильный тип данных`)
 
@@ -24,4 +19,4 @@ function setTimer () {
     }, summaryTime)
 }
 
-setTimer()
+setTimer(process.argv[2], process.argv[3], process.argv[4], process.argv[5])
