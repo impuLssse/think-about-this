@@ -1,21 +1,20 @@
 
 
 function setTimer (message, hour, min, sec) {
-    let nums = [hour, min, sec].map(Number)
-    if (nums.includes(NaN)) throw new Error(`Передан неправильный тип данных`)
+    //  если в строке кроме цифр есть любой другой тип данных, то он отдаст мне NaN
+    let nums = [hour, min, sec].map(Number).includes(NaN)
+    if (nums) throw new Error(`Передан неправильный тип данных`)
 
+    //  теперь можно безопасно делать расчеты
     if (hour) hour = hour * 60 * 60 * 1000
     if (min) min = min * 60 * 1000
     if (sec) sec = sec * 1000
 
-    let summaryTime = [hour, min, sec]
-        .filter(Boolean)
-        .reduce((acc, num) => acc * num)
-
-    console.log(`summary: `, summaryTime)
+    let summaryTime = [hour, min, sec].filter(Boolean).reduce((acc, num) => acc * num)
 
     setTimeout(() => {
-        console.log(message)
+        console.log(`completed: `, summaryTime + 'ms')
+        console.log(`with message: `, message)
     }, summaryTime)
 }
 
