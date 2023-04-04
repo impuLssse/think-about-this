@@ -1,5 +1,8 @@
 {
   "name": "lessons",
   "version": "1.0.0",
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "node-notifier": "^10.0.1"
+  }
 }
