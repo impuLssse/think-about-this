@@ -1,26 +1,54 @@
 import { Worker } from 'worker_threads'
 
-const cores = 2
+let cores = 2
 
-function createWorker (path, data) {
-    return new Worker(path, {
-        workerData: data
+function numberToPartsArray (num, divider) {
+    let nums = [ ...Array(num).keys() ]
+    let start = nums.indexOf(0)
+    let middle = nums.indexOf(num / divider)
+
+    let arrs = { parts: [ nums.slice(start, middle), nums.slice(middle) ] }
+    return arrs
+}
+
+export function calculate (array) {
+    return new Promise(resolve => {
+        let counter = 0
+        performance.mark('start')
+
+        for (let num of array) {
+            if (num % 3 === 0) counter++
+        }
+
+        performance.mark('end')
+        resolve(counter)
     })
 }
 
-function calculte (num) {
-    if (isNaN(num)) throw new Error(`Передан неправильный тип данных`)
+function createWorker (array) {
+    return new Promise(resolve => {
+        let worker = new Worker('./worker.js')
+        worker.postMessage(array)
 
-    //  создаем массив и разбиваем число на кол-во ядер
-    let nums = [ ...Array(num).keys() ]
-
-
-    let part1 = nums.indexOf()
-
-    console.log(halfNum)
-    console.log(part1)
-    //  создаем поток и отдаем половину
-    let worker = createWorker('./worker.js', nums)
+        worker.on('message', value => {
+            worker.terminate().then(resolve(value))
+        })
+    })
 }
 
-calculte(1000)
+function start (num) {
+    if (isNaN(num)) throw new Error(`Передан неправильный тип данных`)
+    let { parts } = numberToPartsArray(num, 4)
+
+    return Promise.all([
+        calculate(parts[0]),
+        createWorker(parts[1]),
+    ])
+        .then(values => values.reduce((acc, item) => acc + item))
+}
+
+start(1000).then(res => console.log(`finished: `, res))
+
+
+const main = performance.measure('main', 'start', 'end')
+console.log(`ms: `, main.duration.toFixed(4))
