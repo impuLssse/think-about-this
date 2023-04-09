@@ -17,13 +17,13 @@ WeatherRouter.get('/',
 )
 
 WeatherRouter.post('/',
-    body('city').notEmpty().withMessage('city is empty'),
+    body(['city']).notEmpty().withMessage('city is empty'),
     validation,
     (req: Request, res: Response, next: NextFunction) => {
         try {
-            let { location } = req.body
+            // let { location } = req.body
             
-            console.log(location)
+            // console.log(location)
             return res.json(1)
         } catch (e) {
             next(e)

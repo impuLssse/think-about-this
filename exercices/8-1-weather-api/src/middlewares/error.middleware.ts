@@ -5,14 +5,14 @@ class ApiError extends Error {
     public status: number
     public errors: any[]
 
-    constructor (status: number, code: string, errors = []) {
+    constructor (status: number, code: string, errors: any[]) {
         super(code)
         this.status = status
         this.errors = errors
     }
 
     static badRequest (errors: ValidationError[]) {
-        return new ApiError(400, 'Bad Request', errors as [])
+        return new ApiError(400, 'Bad Request', errors as ValidationError[])
     }
 }
 
@@ -22,9 +22,10 @@ function exception (error: any, req: Request, res: Response, next: NextFunction)
             code: error.message,
             errors: error.errors
         })
+    } else {
+        return res.status(500).json({ code: 'INTERNAL_SERVER_ERROR' })
     }
     
-    return res.status(500).json({ code: 'INTERNAL_SERVER_ERROR' })
 }
 
 function validation (req: Request, res: Response, next: NextFunction): void {

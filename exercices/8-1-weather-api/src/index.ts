@@ -7,18 +7,19 @@ const { blue } = colors
 const app = express()
 const PORT = 3000
 
-app.use(router)
-app.use(exception)
-app.get('/', (req, res) => {
-    res.status(200).json('ola')
-})
 
 
 function start () {
     try {
+        app.use(router)
+        app.get('/', (req, res) => {
+            res.status(200).json('ola')
+        })
+        
         app.listen(PORT, () => {
             console.log(blue(`[SERVER] success started on port: ${PORT}`))
         })
+        app.use(exception)
     } catch (e) {
         console.log(e)
     }
