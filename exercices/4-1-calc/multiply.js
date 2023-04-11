@@ -1,3 +1,3 @@
 
 
-export const multiply = (x, y) => Number(x) * Number(y)
+export const mul = (x, y) => Number(x) * Number(y)

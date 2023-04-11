@@ -10,6 +10,7 @@
     "openweather-api-node": "^2.1.2",
     "typescript": "^5.0.4"
   },
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "dev": "npm run build && node ./build/index.js"

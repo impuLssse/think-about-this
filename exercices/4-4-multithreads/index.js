@@ -1,6 +1,7 @@
+import { cpus } from 'os'
 import { Worker } from 'worker_threads'
 
-let cores = 2
+const cores = cpus().length
 
 function numberToPartsArray (num, divider) {
     let nums = [ ...Array(num).keys() ]

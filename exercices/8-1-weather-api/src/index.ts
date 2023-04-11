@@ -11,15 +11,16 @@ const PORT = 3000
 
 function start () {
     try {
+        app.use(express.json())
         app.use(router)
         app.get('/', (req, res) => {
             res.status(200).json('ola')
         })
+        app.use(exception)
         
         app.listen(PORT, () => {
             console.log(blue(`[SERVER] success started on port: ${PORT}`))
         })
-        app.use(exception)
     } catch (e) {
         console.log(e)
     }

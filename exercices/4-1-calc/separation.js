@@ -1,3 +1,3 @@
 
 
-export const separation = (x, y) => Number(x) / Number(y)
+export const sep = (x, y) => Number(x) / Number(y)

@@ -1,29 +1,19 @@
 import { add } from './add.js'
-import { multiply } from './multiply.js'
-import { separation } from './separation.js'
+import { mul } from './multiply.js'
+import { sep } from './separation.js'
 
-let nodePath = process.argv[0]
-let appPath = process.argv[1]
+const [ ,, num1, num2, operation ] = process.argv
+const operations = { add, mul, sep }
 
-let num1 = process.argv[2]
-let num2 = process.argv[3]
+function start (num1, num2, operation) {
+    let isNumber = [num1, num2].map(Number).includes(NaN)
+    if (isNumber || !operation) throw new Error(`Передан неправильный тип данных или неверно указана операция`)
 
-let operation = process.argv[4]
-
-
-switch (operation) {
-    case 'add':
-        let resAdd = add(num1, num2)
-        console.log(`result: ${resAdd}`)
-    break;
-
-    case 'mul':
-        let resMul = multiply(num1, num2)
-        console.log(`result: ${resMul}`)
-    break;
-
-    case 'sep':
-        let resSep = separation(num1, num2)
-        console.log(`result: ${resSep}`)
-    break;
+    try {
+        return operations[operation](num1, num2)
+    } catch (e) {
+        throw new Error('Unknown operation')
+    }
 }
+
+console.log('result: ', start(num1, num2, operation))

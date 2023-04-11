@@ -1,17 +1,21 @@
 import EventEmitter from 'events'
-
 const emitter = new EventEmitter()
 
-emitter.on('result', info => console.log(`result: `, info))
+const [ ,, num1, num2, operation ] = process.argv
+const operations = { add: 'add', mul: 'mul', sep: 'sep' }
 
-emitter.on('add', (num1, num2) => {
-    let isNumber = typeof num1 === 'number' && typeof num2 === 'number'
+emitter.on('calculate', (num1, num2, operation) => {
+    const nums = [num1, num2].map(Number)
+    if (nums.includes(NaN) || !operations[operation]) throw new Error(`Передан неправильный тип данных или неверно указана операция`)
     
-    if (isNumber) {
-        emitter.emit('result', num1 + num2)
-    } else {
-        throw new Error(`Передан неправильный тип данных`)
-    }
+    const res = nums.reduce((acc, item) => {
+        if (operations.add === operation) return acc + item
+        if (operations.mul === operation) return acc * item
+        if (operations.sep === operation) return acc / item
+    })
+
+    emitter.emit('result', res)
 })
 
-emitter.emit('add', 3, 2)
+emitter.on('result', res => console.log(`result: `, res))
+emitter.emit('calculate', num1, num2, operation)
